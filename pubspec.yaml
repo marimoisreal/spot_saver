@@ -18,6 +18,8 @@ dependencies:
   flutter_local_notifications: ^17.2.2
   # A&A3
   shared_preferences: ^2.3.2
+  # For map display
+  google_maps_flutter: ^2.10.0
   
 dev_dependencies:
   flutter_test:
