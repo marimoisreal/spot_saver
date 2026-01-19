@@ -38,20 +38,20 @@ class SavedSpot {
   });
 
   Map<String, dynamic> toMap() => {
-    'id': id,
-    'lat': lat,
-    'lng': lng,
-    'battery': battery,
-    'timestamp': timestamp.toIso8601String(),
-  };
+        'id': id,
+        'lat': lat,
+        'lng': lng,
+        'battery': battery,
+        'timestamp': timestamp.toIso8601String(),
+      };
 
   factory SavedSpot.fromMap(Map<String, dynamic> map) => SavedSpot(
-    id: map['id'],
-    lat: map['lat'],
-    lng: map['lng'],
-    battery: map['battery'],
-    timestamp: DateTime.parse(map['timestamp']),
-  );
+        id: map['id'],
+        lat: map['lat'],
+        lng: map['lng'],
+        battery: map['battery'],
+        timestamp: DateTime.parse(map['timestamp']),
+      );
 }
 
 class SpotSaverApp extends StatelessWidget {

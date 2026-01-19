@@ -177,13 +177,13 @@ packages:
     source: hosted
     version: "12.0.0"
   geolocator_android:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: geolocator_android
-      sha256: fcb1760a50d7500deca37c9a666785c047139b5f9ee15aa5469fae7dbbe3170d
+      sha256: fee53384dae4cd911cc185fd21c3a729ce322976707b46bcdb9e3af4cae0a51e
       url: "https://pub.dev"
     source: hosted
-    version: "4.6.2"
+    version: "4.5.3"
   geolocator_apple:
     dependency: transitive
     description:
