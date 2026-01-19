@@ -208,8 +208,7 @@ class _GpsScreenState extends State<GpsScreen> {
       final int result = await platform.invokeMethod('getBatteryLevel');
       return "$result%";
     } catch (e) {
-      // Dynamic simulation for web/desktop environments
-      return "${70 + (DateTime.now().second % 25)}% (Simulated)";
+      return "${70 + (DateTime.now().second % 25)}% (Simulation)";
     }
   }
 
@@ -218,6 +217,7 @@ class _GpsScreenState extends State<GpsScreen> {
       _isLoading = true;
       _statusMessage = "Locating...";
     });
+    debugPrint('analytics_event: user_clicked_capture_button');
 
     double lat, lng;
     String battery;
@@ -236,12 +236,16 @@ class _GpsScreenState extends State<GpsScreen> {
       );
       lat = position.latitude;
       lng = position.longitude;
+
+      debugPrint('analytics_event: gps_coordinates_acquired_successfully');
     } catch (e) {
       lat = 35.8922;
       lng = 14.4396;
+      debugPrint('analytics_event: gps_failed_using_fallback');
     }
 
     battery = await _getBattery();
+    debugPrint('analytics_event: battery_status_recorded_at_$battery');
 
     final newSpot = SavedSpot(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
@@ -268,6 +272,7 @@ class _GpsScreenState extends State<GpsScreen> {
     }
 
     _notifyUser();
+    debugPrint('analytics_event: full_record_persisted_to_storage');
   }
 
   @override
@@ -386,6 +391,7 @@ class _GpsScreenState extends State<GpsScreen> {
         ),
         IgnorePointer(
           child: Container(
+            // ignore: deprecated_member_use
             color: Colors.black.withOpacity(0.01),
             child: const Center(
               child: Text(
@@ -433,11 +439,6 @@ class HistoryScreen extends StatelessWidget {
                     horizontal: 16,
                     vertical: 8,
                   ),
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    side: BorderSide(color: Colors.grey.shade200),
-                  ),
                   child: ListTile(
                     onTap: () {
                       Clipboard.setData(
@@ -445,14 +446,15 @@ class HistoryScreen extends StatelessWidget {
                       );
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text("Coordinates copied to clipboard"),
-                          duration: Duration(seconds: 1),
+                          content: Text(
+                            "Coordinates were copied to clipboard!",
+                          ),
                         ),
                       );
                     },
-                    leading: const CircleAvatar(
-                      backgroundColor: Color(0xFFF3E5F5),
-                      child: Icon(Icons.location_on, color: Colors.deepPurple),
+                    leading: const Icon(
+                      Icons.location_on,
+                      color: Colors.deepPurple,
                     ),
                     title: Text(
                       "${spot.lat.toStringAsFixed(4)}, ${spot.lng.toStringAsFixed(4)}",
@@ -461,11 +463,7 @@ class HistoryScreen extends StatelessWidget {
                       "Battery: ${spot.battery} • ${spot.timestamp.hour}:${spot.timestamp.minute.min}",
                     ),
                     trailing: IconButton(
-                      icon: const Icon(
-                        Icons.delete_outline,
-                        color: Colors.grey,
-                        size: 22,
-                      ),
+                      icon: const Icon(Icons.delete_outline),
                       onPressed: () => onDelete(spot.id),
                     ),
                   ),
