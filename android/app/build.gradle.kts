@@ -7,12 +7,14 @@ plugins {
 
 android {
     namespace = "com.example.spot_saver"
-    compileSdk = 35 
-    ndkVersion = flutter.ndkVersion
+    compileSdk = 33
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+    defaultConfig {
+        applicationId = "com.example.spot_saver"
+        minSdk = 21
+        targetSdk = 33
+        versionCode = flutter.versionCode
+        versionName = flutter.versionName
     }
 
     kotlinOptions {
