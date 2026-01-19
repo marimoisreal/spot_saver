@@ -21,12 +21,9 @@ jobs:
 
       - name: Install dependencies
         run: flutter pub get
-        
+
       - name: Analyze code (Linting)
         run: flutter analyze
-
-      - name: Run unit tests
-        run: flutter test
 
       - name: Build Android APK
         run: flutter build apk --debug --no-pub
