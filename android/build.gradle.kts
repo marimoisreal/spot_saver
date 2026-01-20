@@ -6,10 +6,10 @@ allprojects {
     }
 }
 
-extra["compileSdkVersion"] = 33
-extra["compileSdk"] = 33
-extra["targetSdkVersion"] = 33
-extra["targetSdk"] = 33
+extra["compileSdkVersion"] = 34
+extra["compileSdk"] = 34
+extra["targetSdkVersion"] = 34
+extra["targetSdk"] = 34
 extra["minSdkVersion"] = 21
 extra["minSdk"] = 21
 
@@ -26,6 +26,6 @@ subprojects {
 }
 
 // Настроить уже существующую задачу clean (не регистрировать заново)
-tasks.named("clean", Delete::class).configure {
+tasks.register<Delete>("clean") {
     delete(rootProject.layout.buildDirectory)
 }
