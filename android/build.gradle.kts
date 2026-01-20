@@ -25,7 +25,6 @@ subprojects {
     evaluationDependsOn(":app")
 }
 
-// Настроить уже существующую задачу clean (не регистрировать заново)
 tasks.named("clean", Delete::class).configure {
     delete(rootProject.layout.buildDirectory)
 }
