@@ -6,12 +6,21 @@ import 'dart:convert';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_core/firebase_core.dart';
+// ignore: unused_import
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'firebase_options.dart';
 
 // Entry point of the application.
 // Ensures that plugin services are initialized before running the UI.
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(const SpotSaverApp());
 }
 
@@ -112,6 +121,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     });
     final String encoded = jsonEncode(_history.map((s) => s.toMap()).toList());
     await prefs.setString('saved_spots', encoded);
+
+    await FirebaseAnalytics.instance.logEvent(name: 'spot_saved');
   }
 
   // Delete a specific spot from history
@@ -217,7 +228,7 @@ class _GpsScreenState extends State<GpsScreen> {
       _isLoading = true;
       _statusMessage = "Locating...";
     });
-    debugPrint('analytics_event: user_clicked_capture_button');
+    await FirebaseAnalytics.instance.logEvent(name: 'capture_button_clicked');
 
     double lat, lng;
     String battery;
@@ -237,15 +248,19 @@ class _GpsScreenState extends State<GpsScreen> {
       lat = position.latitude;
       lng = position.longitude;
 
-      debugPrint('analytics_event: gps_coordinates_acquired_successfully');
+      await FirebaseAnalytics.instance
+          .logEvent(name: 'gps_acquired', parameters: {'success': 'true'});
     } catch (e) {
       lat = 35.8922;
       lng = 14.4396;
-      debugPrint('analytics_event: gps_failed_using_fallback');
+      await FirebaseAnalytics.instance.logEvent(
+          name: 'gps_acquired',
+          parameters: {'success': 'false', 'error': 'fallback_used'});
     }
 
     battery = await _getBattery();
-    debugPrint('analytics_event: battery_status_recorded_at_$battery');
+    await FirebaseAnalytics.instance
+        .logEvent(name: 'battery_recorded', parameters: {'level': battery});
 
     final newSpot = SavedSpot(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
@@ -272,7 +287,7 @@ class _GpsScreenState extends State<GpsScreen> {
     }
 
     _notifyUser();
-    debugPrint('analytics_event: full_record_persisted_to_storage');
+    await FirebaseAnalytics.instance.logEvent(name: 'full_capture_success');
   }
 
   @override

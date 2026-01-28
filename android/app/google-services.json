@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "415570387622",
+    "project_id": "spot-saver-seven-bd485",
+    "storage_bucket": "spot-saver-seven-bd485.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:415570387622:android:0be6bdd99a57d93ca18a67",
+        "android_client_info": {
+          "package_name": "com.example.spot_saver"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFnnkYGx9C-ME4ByRn_73tOoeFoqRkHpY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
